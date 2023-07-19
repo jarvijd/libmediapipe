@@ -9,9 +9,9 @@
 #include "mediapipe/framework/tool/options_util.h"
 
 #ifndef MEDIAPIPE_DISABLE_GPU
-#include "mediapipe/gpu/gl_calculator_helper.h"
+#include "mediapipe/gpu/gl_calculator_helper.h" 
 #include "mediapipe/gpu/gpu_buffer.h" 
-#include "mediapipe/gpu/gpu_shared_data_internal.h"
+#include "mediapipe/gpu/gpu_shared_data_internal.h" 
 #endif
 
 #include "mediapipe/calculators/util/thresholding_calculator.pb.h"
