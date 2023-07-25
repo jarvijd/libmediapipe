@@ -71,6 +71,8 @@ extern "C" {
         float x;
         float y;
         float z;
+        float visbility;
+        float presence;
     } mp_landmark;
 
     /// A list of landmarks detected for a face or hand.

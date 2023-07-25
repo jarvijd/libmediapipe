@@ -79,11 +79,19 @@ static mp_landmark_list* get_landmarks(mp_packet* packet) {
 
     for (int j = 0; j < mp_list.landmark_size(); j++) {
         const Landmark& mp_landmark = mp_list.landmark(j);
-        list[j] = {
-            mp_landmark.x(),
-            mp_landmark.y(),
-            mp_landmark.z()
-        };
+        list[j].x = mp_landmark.x();
+        list[j].y = mp_landmark.y();
+        list[j].z = mp_landmark.z();
+        list[j].visbility = mp_landmark.has_visibility() ? mp_landmark.visibility() : 0.0f;
+        list[j].presence = mp_landmark.has_presence() ? mp_landmark.presence() : 0.0f; 
+
+        //list[j] = {
+        //    mp_landmark.x(),
+        //    mp_landmark.y(),
+        //    mp_landmark.z(),
+        //    mp_landmark.has_visibility() ? mp_landmark.visibility() : 0.0f,
+        //    mp_landmark.has_presence() ? mp_landmark.presence() : 0.0f
+        //};
     }
 
     return new mp_landmark_list{
