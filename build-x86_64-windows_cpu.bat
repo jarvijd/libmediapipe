@@ -29,6 +29,7 @@ bazel build -c %BAZEL_CONFIG% ^
 	--verbose_explanations ^
 	mediapipe/c:mediapipe
 
+	rem --subcommands ^  (show all cl commands)
 	rem --compiler=clang-cl ^
 
 if %ERRORLEVEL% NEQ 0 (

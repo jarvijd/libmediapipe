@@ -4,7 +4,7 @@
 
 using namespace TasksApi;
 namespace vision = mediapipe::tasks::vision::pose_landmarker;
-namespace core = mediapipe::tasks::vision::core;
+namespace core = mediapipe::tasks::vision::core; 
 
 mediapipe::Image MakeImage(cv::Mat* image)
 {
@@ -20,7 +20,7 @@ mediapipe::Image MakeImage(cv::Mat* image)
 PoseLandmarkerResult MakeResult(vision::PoseLandmarkerResult& result)
 {
 	TasksApi::PoseLandmarkerResult pr;
-	for (const auto& list : result.pose_landmarks)
+	for (const auto& list : result.pose_landmarks) 
 	{
 		std::vector<NormalizedLandmark> new_list;
 		for (const auto& lm : list.landmarks)
