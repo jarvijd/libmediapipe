@@ -4,8 +4,8 @@ package(default_visibility = [
 
 cc_binary(
     name = "mediapipe",
-    srcs = ["mediapipe.cpp", "mediapipe.h"],
-    defines = ["MEDIAPIPE_EXPORT"],
+    srcs = ["mediapipe.cpp", "mediapipe.h", "tasksapi.cpp", "tasksapi.h" ],
+    defines = ["MEDIAPIPE_EXPORT" ],
     data = [
         "//mediapipe/modules/hand_landmark:hand_landmark_full.tflite",
         "//mediapipe/modules/hand_landmark:hand_landmark_lite.tflite",
@@ -28,6 +28,7 @@ cc_binary(
         "//mediapipe/framework/port:status",
         "@com_google_absl//absl/flags:flag",
         "@com_google_absl//absl/flags:parse",
+        "//mediapipe/tasks/cc/vision/pose_landmarker:pose_landmarker",
         
         "//mediapipe/graphs/face_mesh:desktop_live_calculators",
         "//mediapipe/modules/pose_landmark:pose_landmark_cpu",

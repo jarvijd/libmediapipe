@@ -39,10 +39,21 @@ ABSL_DECLARE_FLAG(std::string, resource_root_dir);
 
 thread_local absl::Status last_error;
 
+#include "mediapipe/tasks/cc/vision/pose_landmarker/pose_landmarker.h""
+
+using namespace mediapipe::tasks::vision::pose_landmarker;
+int jj_test()
+{
+    auto options = std::make_unique<PoseLandmarkerOptions>();
+
+    auto pose_landmarker_options = std::make_unique<PoseLandmarkerOptions>();
+    auto pl = PoseLandmarker::Create(std::move(pose_landmarker_options));
+	return 0;
+}
 struct mp_node_option {
     const char* node;
     const char* option;
-    std::variant<float, double> value;
+    std::variant<float, double, int> value;
 };
 
 struct mp_instance_builder {
@@ -199,6 +210,10 @@ extern "C" {
         instance_builder->options.push_back({ node, option, value });
     }
 
+    MEDIAPIPE_API void mp_add_option_int(mp_instance_builder* instance_builder, const char* node, const char* option, int value) {
+        instance_builder->options.push_back({ node, option, value }); 
+    }
+
     MEDIAPIPE_API void mp_add_side_packet(mp_instance_builder* instance_builder, const char* name, mp_packet* packet) {
         instance_builder->side_packets.insert({ name, packet->packet });
         mp_destroy_packet(packet);
@@ -227,7 +242,7 @@ extern "C" {
         mediapipe::CalculatorGraphConfig canonical_config = validated_config.Config();
 
         for (const mp_node_option& option : builder->options) {
-            for (auto& node : *canonical_config.mutable_node()) {
+            for (auto& node : *canonical_config.mutable_node()) { 
                 if (node.name() != option.node) {
                     continue;
                 }
@@ -252,20 +267,20 @@ extern "C" {
                 switch (option.value.index()) {
                 case 0: reflection->SetFloat(ext, field_descriptor, std::get<0>(option.value)); break;
                 case 1: reflection->SetDouble(ext, field_descriptor, std::get<1>(option.value)); break;
+                case 2: reflection->SetInt32(ext, field_descriptor, std::get<2>(option.value)); break;
                 }
             }
         }
 
         /* For printing the graph
-
         google::protobuf::util::JsonPrintOptions json_options;
         json_options.add_whitespace = true;
 
         std::string str;
         google::protobuf::util::MessageToJsonString(canonical_config, &str, json_options);
         std::cout << str << std::endl;
-
         */
+
 
         auto* instance = new mp_instance;
         absl::Status result = instance->graph.Initialize(canonical_config, builder->side_packets);

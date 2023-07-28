@@ -156,6 +156,9 @@ extern "C" {
     /// Sets a double value in the node options of the graph.
     MEDIAPIPE_API void mp_add_option_double(mp_instance_builder* instance_builder, const char* node, const char* option, double value);
 
+    /// Sets a int value in the node options of the graph.
+    MEDIAPIPE_API void mp_add_option_int(mp_instance_builder* instance_builder, const char* node, const char* option, int value);
+
     /// Adds a side packet to the stream.
     /// The function claims ownership of the packet and will deallocate it.
     MEDIAPIPE_API void mp_add_side_packet(mp_instance_builder* instance_builder, const char* name, mp_packet* packet);
@@ -281,6 +284,8 @@ extern "C" {
     /// Deallocates the error message returned by mp_get_last_error
     MEDIAPIPE_API void mp_free_error(const char* message);
 
+    MEDIAPIPE_API int jj_test();
+        
 #ifdef __cplusplus
 }
 #endif

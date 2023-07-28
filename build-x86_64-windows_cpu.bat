@@ -2,6 +2,8 @@
 
 set VERSION=v0.10.2
 set BAZEL_CONFIG=opt
+rem set BAZEL_CONFIG=dbg
+
 set PYTHON_BIN_PATH=C:/Users/Administrator/AppData/Local/Programs/Python/Python310/python.exe
 
 set OUTPUT_DIR=output
@@ -24,12 +26,14 @@ bazel build -c %BAZEL_CONFIG% ^
 	--action_env PYTHON_BIN_PATH=%PYTHON_BIN_PATH% ^
 	--define MEDIAPIPE_DISABLE_GPU=1 ^
 	--verbose_failures ^
+	--verbose_explanations ^
 	mediapipe/c:mediapipe
 
 	rem --compiler=clang-cl ^
 
 if %ERRORLEVEL% NEQ 0 (
 	echo "Build failed"
+	popd
 	exit /b 1
 )
 
@@ -50,6 +54,7 @@ copy mediapipe\bazel-bin\mediapipe\c\mediapipe.if.lib %PACKAGE_DIR%\lib\mediapip
 
 echo "Copying header"
 copy mediapipe\mediapipe\c\mediapipe.h %PACKAGE_DIR%\include
+copy mediapipe\mediapipe\c\tasksapi.h %PACKAGE_DIR%\include
 
 echo "Copying data"
 
