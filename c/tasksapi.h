@@ -72,6 +72,31 @@ namespace TasksApi
         bool output_segmentation_masks = false;
     };
 
+    // copied from task/cc/vision/hand_landmarker.h
+    struct HandLandmarkerOptions
+    {
+        BaseOptions base_options;
+
+        RunningMode running_mode = RunningMode::IMAGE;
+        int num_hands = 1;
+        float min_hand_detection_confidence = 0.5;
+        float min_hand_presence_confidence = 0.5;
+        float min_tracking_confidence = 0.5;
+    };
+
+    struct Category 
+    {
+        int index;
+        float score;
+        std::optional<std::string> category_name = std::nullopt;
+        std::optional<std::string> display_name = std::nullopt;
+    };
+    struct Classifications
+    {
+        std::vector<Category> categories;
+        int head_index;
+        std::optional<std::string> head_name = std::nullopt;
+    };
     struct Landmark {
         float x;
         float y;
@@ -93,6 +118,12 @@ namespace TasksApi
         //std::optional<std::vector<Image>> segmentation_masks;
         std::vector<std::vector<NormalizedLandmark>> pose_landmarks;
         std::vector<std::vector<Landmark>> pose_world_landmarks;
+    };
+    struct HandLandmarkerResult 
+    {
+        std::vector<Classifications> handedness;
+        std::vector<std::vector<NormalizedLandmark>> hand_landmarks;
+        std::vector<std::vector<Landmark>> hand_world_landmarks;
     };
 
     // copied from task/components/containers/rect.h
@@ -127,4 +158,22 @@ namespace TasksApi
     private:
         void* internal_pose_landmarker;
     };
+
+    class HandLandmarker 
+    {
+    public:
+        TASKS_API static std::unique_ptr<HandLandmarker> Create(HandLandmarkerOptions& options);
+
+        TASKS_API HandLandmarkerResult Detect(cv::Mat* image, std::optional<ImageProcessingOptions> image_processing_options = std::nullopt);
+
+        TASKS_API HandLandmarkerResult DetectForVideo(cv::Mat* image, int64 timestamp_ms, std::optional<ImageProcessingOptions> image_processing_options = std::nullopt);
+
+        TASKS_API bool DetectAsync(cv::Mat* image, int64 timestamp_ms, std::optional<ImageProcessingOptions> image_processing_options = std::nullopt);
+
+        TASKS_API bool Close();
+
+    private:
+        void* internal_hand_landmarker;
+    };
+
 }
